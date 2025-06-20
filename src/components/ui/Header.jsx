@@ -1,48 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Icon from '../AppIcon';
 
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
-  const [processingStatus, setProcessingStatus] = useState({
-    activeJobs: 2,
-    completedToday: 5,
-    isProcessing: true
-  });
+  
+  // Simplification: suppression des éléments de statut non fonctionnels
 
   const navigationTabs = [
     {
       id: 'dashboard',
       label: 'Dashboard',
-      path: '/dashboard-home',
+      path: '/',
       icon: 'LayoutDashboard',
-      tooltip: 'Project overview and quick actions'
+      tooltip: 'Accueil'
     },
     {
       id: 'create',
-      label: 'Create',
+      label: 'Create Video',
       paths: ['/video-creation-workflow', '/avatar-voice-customization'],
       icon: 'Video',
-      tooltip: 'Video creation workflow and customization',
-      badge: processingStatus.activeJobs > 0 ? processingStatus.activeJobs : null
+      tooltip: 'Créer une nouvelle vidéo'
     },
     {
-      id: 'monitor',
-      label: 'Monitor',
-      path: '/processing-status-queue',
-      icon: 'Activity',
-      tooltip: 'Processing status and queue management',
-      badge: processingStatus.isProcessing ? 'active' : null
-    },
-    {
-      id: 'library',
-      label: 'Library',
-      paths: ['/video-preview-export', '/project-history-library'],
-      icon: 'FolderOpen',
-      tooltip: 'Project management and export tools'
+      id: 'export',
+      label: 'Export',
+      path: '/video-preview-export',
+      icon: 'Share2',
+      tooltip: 'Prévisualiser et exporter'
     }
   ];
 
@@ -64,36 +50,7 @@ const Header = () => {
     }
   };
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate('/project-history-library', { state: { searchQuery: searchQuery.trim() } });
-      setSearchQuery('');
-      setIsSearchExpanded(false);
-    }
-  };
-
-  const handleSearchFocus = () => {
-    setIsSearchExpanded(true);
-  };
-
-  const handleSearchBlur = () => {
-    if (!searchQuery) {
-      setIsSearchExpanded(false);
-    }
-  };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setProcessingStatus(prev => ({
-        ...prev,
-        activeJobs: Math.max(0, prev.activeJobs + Math.floor(Math.random() * 3) - 1),
-        completedToday: prev.completedToday + (Math.random() > 0.8 ? 1 : 0)
-      }));
-    }, 30000);
-
-    return () => clearInterval(interval);
-  }, []);
+  // Suppression des fonctions de recherche et de mise à jour de statut non fonctionnelles
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-surface border-b border-border z-1000">
@@ -125,15 +82,7 @@ const Header = () => {
               >
                 <Icon name={tab.icon} size={16} />
                 <span>{tab.label}</span>
-                {tab.badge && (
-                  <span className={`
-                    inline-flex items-center justify-center min-w-[18px] h-[18px] text-xs font-medium rounded-full
-                    ${tab.badge === 'active' ?'bg-accent text-white animate-pulse-gentle' :'bg-secondary text-white'
-                    }
-                  `}>
-                    {tab.badge === 'active' ? '' : tab.badge}
-                  </span>
-                )}
+                {/* Suppression des badges non fonctionnels */}
               </button>
             ))}
           </nav>
